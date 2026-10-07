@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portfolio Jany Růžičkové. Svatební líčení, přirozený foto make-up a večerní looky.">
+  <meta name="theme-color" content="#fdf0f3">
+  <title>Portfolio | Jana Růžičková</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#obsah">Přejít na obsah</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Jana Růžičková, úvod"><span>Jana Růžičková<span class="brand-dot">.</span></span><small>MAKE-UP ARTIST</small></a>
+    <button class="menu-toggle" type="button" aria-label="Otevřít menu" aria-controls="main-nav" aria-expanded="false"><span></span><span></span></button>
+    <nav id="main-nav" class="main-nav" aria-label="Hlavní navigace"><a href="index.html">Úvod</a><a href="sluzby.html">Služby & ceník</a><a href="galerie.html" aria-current="page">Portfolio</a><a href="kontakt.html" class="nav-cta">Domluvit líčení <span aria-hidden="true">↗</span></a></nav>
+  </header>
+  <main id="obsah">
+    <section class="page-intro"><div class="wrap"><p class="eyebrow">PORTFOLIO</p><h1>Každá tvář.<br><em>Jiný příběh.</em></h1><p>Jemné tóny, výrazné oči i přirozená krása. Prostor pro výběr z mé práce. Skutečné fotografie zde brzy doplníme.</p></div></section>
+    <section class="section wrap" aria-label="Galerie líčení">
+      <div class="filters" role="group" aria-label="Filtrovat portfolio"><button class="filter" data-filter="all" type="button" aria-pressed="true">Všechny looky</button><button class="filter" data-filter="svatebni" type="button" aria-pressed="false">Svatební</button><button class="filter" data-filter="vecerni" type="button" aria-pressed="false">Večerní</button><button class="filter" data-filter="foto" type="button" aria-pressed="false">Foto make-up</button></div>
+      <div class="gallery-grid">
+        <button type="button" class="gallery-item" data-category="svatebni" data-caption="Jemnost pro váš den · Svatební líčení" aria-label="Zvětšit ukázku: Jemnost pro váš den"><span class="work-image"><img src="Images/placeholder.svg" alt="Placeholder pro jemné svatební líčení" width="1200" height="1500"><span class="photo-label">FOTOGRAFIE BRZY</span></span><span class="work-caption"><span class="work-title">Jemnost pro váš den</span><span>SVATEBNÍ LÍČENÍ</span></span></button>
+        <button type="button" class="gallery-item" data-category="foto" data-caption="Přirozeně vy · Foto make-up" aria-label="Zvětšit ukázku: Přirozeně vy"><span class="work-image tone-sage"><img src="Images/placeholder.svg" alt="Placeholder pro přirozené fotografické líčení" width="1200" height="1500"><span class="photo-label">FOTOGRAFIE BRZY</span></span><span class="work-caption"><span class="work-title">Přirozeně vy</span><span>FOTO MAKE-UP</span></span></button>
+        <button type="button" class="gallery-item" data-category="vecerni" data-caption="Večer s jiskrou · Večerní líčení" aria-label="Zvětšit ukázku: Večer s jiskrou"><span class="work-image tone-deep"><img src="Images/placeholder.svg" alt="Placeholder pro večerní líčení" width="1200" height="1500"><span class="photo-label">FOTOGRAFIE BRZY</span></span><span class="work-caption"><span class="work-title">Večer s jiskrou</span><span>VEČERNÍ LÍČENÍ</span></span></button>
+        <button type="button" class="gallery-item" data-category="svatebni" data-caption="V růžových tónech · Svatební líčení" aria-label="Zvětšit ukázku: V růžových tónech"><span class="work-image tone-deep"><img src="Images/placeholder.svg" alt="Placeholder pro svatební líčení v růžových tónech" width="1200" height="1500" loading="lazy"><span class="photo-label">FOTOGRAFIE BRZY</span></span><span class="work-caption"><span class="work-title">V růžových tónech</span><span>SVATEBNÍ LÍČENÍ</span></span></button>
+        <button type="button" class="gallery-item" data-category="vecerni" data-caption="Výrazný pohled · Večerní líčení" aria-label="Zvětšit ukázku: Výrazný pohled"><span class="work-image"><img src="Images/placeholder.svg" alt="Placeholder pro večerní líčení s výraznýma očima" width="1200" height="1500" loading="lazy"><span class="photo-label">FOTOGRAFIE BRZY</span></span><span class="work-caption"><span class="work-title">Výrazný pohled</span><span>VEČERNÍ LÍČENÍ</span></span></button>
+        <button type="button" class="gallery-item" data-category="foto" data-caption="Světlo a detail · Foto make-up" aria-label="Zvětšit ukázku: Světlo a detail"><span class="work-image tone-sage"><img src="Images/placeholder.svg" alt="Placeholder pro beauty fotografické líčení" width="1200" height="1500" loading="lazy"><span class="photo-label">FOTOGRAFIE BRZY</span></span><span class="work-caption"><span class="work-title">Světlo a detail</span><span>FOTO MAKE-UP</span></span></button>
+      </div>
+      <p class="gallery-count" aria-live="polite" data-gallery-count>6 ukázek</p>
+      <noscript><p>Pro zvětšování a filtrování fotografií je potřeba zapnout JavaScript.</p></noscript>
+    </section>
+    <section class="booking-band"><div class="wrap reveal"><p class="eyebrow">INSPIRACE PRO VÁŠ LOOK</p><h2>Jaký bude <em>ten váš?</em></h2><p>Vaše oblíbené líčení může být začátkem naší společné představy.</p><a class="button" href="kontakt.html">Domluvit líčení <span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="site-footer wrap"><a class="brand" href="index.html"><span>Jana Růžičková<span class="brand-dot">.</span></span><small>MAKE-UP ARTIST</small></a><p>S citem. S lehkostí. Pro vás.</p><a href="kontakt.html">Kontakt <span aria-hidden="true">↗</span></a><small class="copyright">© <span data-year>2026</span> Jana Růžičková</small></footer>
+  <dialog class="lightbox" aria-labelledby="lightbox-caption"><div class="lightbox-inner"><div class="lightbox-top"><span data-lightbox-count></span><button type="button" class="icon-button lightbox-close" aria-label="Zavřít fotografii" title="Zavřít fotografii">×</button></div><div class="lightbox-stage"><img class="lightbox-image" src="Images/placeholder.svg" alt=""><button type="button" class="icon-button lightbox-prev" aria-label="Předchozí fotografie" title="Předchozí fotografie">←</button><button type="button" class="icon-button lightbox-next" aria-label="Další fotografie" title="Další fotografie">→</button></div><p id="lightbox-caption" class="lightbox-caption" aria-live="polite"></p></div></dialog>
+</body>
+</html>

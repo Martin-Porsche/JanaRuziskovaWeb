@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <rect width="1200" height="1500" fill="#e9d1d5"/>
+  <path d="M0 0h390v1500H0z" fill="#f0dfe1"/>
+  <path d="M980 0h220v1500H980z" fill="#d7babf"/>
+  <rect x="470" y="270" width="460" height="960" rx="230" fill="none" stroke="#c09ca5" stroke-width="2"/>
+  <rect x="495" y="295" width="410" height="910" rx="205" fill="none" stroke="#c09ca5" stroke-width="1"/>
+  <path d="M600 720h200m-100-100v200" stroke="#c09ca5" stroke-width="2"/>
+  <text x="700" y="890" text-anchor="middle" font-family="Georgia,serif" font-size="32" fill="#98747e">Vaše fotografie</text>
+  <text x="700" y="935" text-anchor="middle" font-family="sans-serif" font-size="12" letter-spacing="3" fill="#98747e">JANA RŮŽIČKOVÁ</text>
+</svg>
