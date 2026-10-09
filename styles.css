@@ -153,8 +153,12 @@ details p { color: var(--muted); margin-top: 15px; }
 .field-error { color: #a12e47; font-size: 16px; display: block; margin-top: 5px; }
 .form-check { display: flex; gap: 12px; align-items: flex-start; margin: 22px 0; font-size: 16px; color: var(--muted); }
 .form-check input { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--wine); margin-top: 3px; }
-.form-status { margin-top: 20px; border-left: 2px solid var(--rose); padding-left: 15px; }
-.form-status p { font-size: 16px; color: var(--muted); }
+.contact-form [data-submit-label] { font-size: 16px; line-height: inherit; }
+.form-status { margin-top: 20px; border-left: 3px solid var(--rose); padding: 18px 20px; background: var(--pink); overflow-wrap: anywhere; }
+.form-status p { font-size: 16px; color: var(--wine); }
+.form-status[data-state="error"] { border-color: #a12e47; }
+.form-status[data-state="error"] p { color: #a12e47; }
+.form-status .text-link { margin-top: 16px; }
 .form-status .button { margin-top: 16px; }
 .privacy { border-top: 1px solid var(--line); padding-top: 30px; margin-top: 48px; }
 .privacy h2 { font-size: 24px; margin-bottom: 16px; }

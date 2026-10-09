@@ -142,8 +142,8 @@ const form = document.querySelector(".contact-form");
 
 if (form) {
   form.noValidate = true;
-  form.querySelector('[type="submit"]').disabled = false;
-  const fields = [...form.querySelectorAll("input, select, textarea")];
+  const submitButton = form.querySelector('[type="submit"]');
+  const fields = [...form.querySelectorAll('input:not([type="hidden"]):not([name="_honey"]), select, textarea')];
   const dateInput = form.elements.namedItem("date");
   const today = new Date();
   dateInput.min = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
@@ -155,7 +155,30 @@ if (form) {
   const status = form.querySelector(".form-status");
   const result = form.querySelector("[data-form-result]");
   const emailButton = form.querySelector("[data-email]");
+  const downloadButton = form.querySelector("[data-download]");
+  const homeLink = form.querySelector("[data-form-home]");
+  const submitLabel = form.querySelector("[data-submit-label]");
+  const idleLabel = submitLabel.textContent;
   let preparedMessage = "";
+  let isSubmitting = false;
+
+  window.addEventListener("pageshow", () => {
+    isSubmitting = false;
+    submitButton.disabled = false;
+    fields.forEach((field) => { field.disabled = false; });
+    form.removeAttribute("aria-busy");
+    submitLabel.textContent = idleLabel;
+    status.hidden = true;
+  });
+
+  function showStatus(state, message, showAlternatives = false) {
+    status.dataset.state = state;
+    result.textContent = message;
+    downloadButton.hidden = !showAlternatives;
+    emailButton.hidden = !showAlternatives;
+    homeLink.hidden = state !== "success";
+    status.hidden = false;
+  }
 
   function validateField(field) {
     let error = "";
@@ -185,8 +208,9 @@ if (form) {
     });
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (isSubmitting) return;
     let firstInvalid = null;
     fields.forEach((field) => {
       if (!validateField(field) && !firstInvalid) firstInvalid = field;
@@ -210,11 +234,65 @@ if (form) {
       values.get("message").trim(), "", "Děkuji."
     ].join("\n");
     const recipient = form.dataset.recipient.trim();
-    emailButton.hidden = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipient);
-    result.textContent = emailButton.hidden
-      ? "Poptávka je připravená, ale nebyla odeslána. Skutečný e-mail Jany zatím není doplněný. Text si můžete stáhnout; nejde o potvrzenou rezervaci."
-      : "Poptávka je připravená, ale zatím nebyla odeslána. Otevřete ji ve své e-mailové aplikaci a odešlete. Termín je platný až po osobním potvrzení.";
-    status.hidden = false;
+    if (location.protocol === "http:" || location.protocol === "https:") {
+      const payload = {
+        _subject: "Nová poptávka líčení – Jana Růžičková",
+        _template: "table",
+        _replyto: values.get("email").trim(),
+        _honey: values.get("_honey") || "",
+        "Jméno": values.get("name").trim(),
+        "E-mail": values.get("email").trim(),
+        "Telefon": values.get("phone").trim() || "Neuveden",
+        "Služba": selectedService,
+        "Požadované datum": selectedDate,
+        "Místo / město": values.get("place").trim() || "Po domluvě",
+        "Zpráva": values.get("message").trim(),
+        "Informace o soukromí": "Vzaty na vědomí",
+        "Rezervace": "Poptávka je nezávazná. Termín musí být potvrzen osobně."
+      };
+      if (payload._honey) {
+        showStatus("error", "Poptávku se nepodařilo odeslat. Můžete ji odeslat ze své e-mailové aplikace.", true);
+        return;
+      }
+      isSubmitting = true;
+      submitButton.disabled = true;
+      fields.forEach((field) => { field.disabled = true; });
+      form.setAttribute("aria-busy", "true");
+      submitLabel.textContent = "Odesílání…";
+      showStatus("pending", "Odesíláme vaši poptávku…");
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 20000);
+      try {
+        const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipient)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        const data = await response.json();
+        if (!response.ok || (data.success !== true && data.success !== "true")) {
+          throw new Error("Submission not confirmed");
+        }
+        if (/activat|confirm.*email|verify.*email/i.test(String(data.message || ""))) {
+          showStatus("notice", "Odesílání zatím není aktivované. Příjemce musí potvrdit aktivační e-mail od FormSubmit. Poptávka nebyla potvrzena jako odeslaná; můžete ji zatím odeslat ze své e-mailové aplikace.", true);
+        } else {
+          showStatus("success", "Vaše poptávka byla úspěšně odeslána. Děkujeme! Ozveme se vám kvůli domluvě. Termín je rezervovaný až po osobním potvrzení.");
+          form.reset();
+          preparedMessage = "";
+        }
+      } catch {
+        showStatus("error", "Odeslání se nepodařilo potvrdit. Vaše údaje zůstaly ve formuláři. Zkontrolujte připojení a zkuste to později, nebo poptávku odešlete ze své e-mailové aplikace. Při opakování může přijít duplicitní zpráva.", true);
+      } finally {
+        clearTimeout(timeout);
+        fields.forEach((field) => { field.disabled = false; });
+        submitButton.disabled = false;
+        submitLabel.textContent = idleLabel;
+        form.removeAttribute("aria-busy");
+        isSubmitting = false;
+      }
+      return;
+    }
+    showStatus("notice", "Poptávka je připravená, ale nebyla odeslána. Pro přímé odesílání otevřete web přes hosting nebo místní webový server. Nyní ji můžete otevřít ve své e-mailové aplikaci a sami odeslat, nebo stáhnout jako text. Termín je platný až po osobním potvrzení.", true);
   });
 
   form.querySelector("[data-download]").addEventListener("click", () => {
