@@ -42,6 +42,12 @@ AJAX posila cesky predmet, nazvy poli, nazvy sluzeb a cesky format data. Pole `_
 2. Ve schrance `sekerabka@gmail.com` najdete aktivacni e-mail od FormSubmit a potvrdte jej. Zkontrolujte take spam. Bez aktivace nelze spolehat na dorucovani poptavek.
 3. Po aktivaci odeslete dalsi zkusebni poptavku a overte jeji doruceni. Dorucovani znovu zkontrolujte po nasazeni na skutecny hosting.
 
+### Kdyz odesilani na GitHub Pages nefunguje
+
+Aktivace pri vyvoji na localhostu nezarucuje aktivaci nasazeneho formulare. Pokud FormSubmit odpovi `This form needs Activation`, najdete ve schrance prijemce nejnovejsi aktivacni e-mail pro nasazenou adresu, kliknete na `Activate Form` a odeslete poptavku znovu. Zkontrolujte i spam. Puvodni nepotvrzena poptavka neni dukazem doruceni.
+
+Skript rozpozna aktivaci i pri `success: false`. Pri jinem odmitnuti zobrazi HTTP stav a zpravu sluzby; pri chybe spojeni zachova vyplnene udaje. Po uprave skriptu publikujte zmeny do vetve pouzivane GitHub Pages, pockejte na dokonceni nasazeni a obnovte stranku bez cache (`Ctrl+Shift+R`).
+
 Pri zmene prijemce upravte na formulari `action="https://formsubmit.co/novy-email"` i `data-recipient="novy-email"`, text v sekci soukromi a tento navod. Novou adresu bude nutne aktivovat. Adresa je verejna ve zdrojovem kodu; FormSubmit po aktivaci nabizi take identifikator pro jeji skryti v endpointu.
 
 Pri otevreni pres `file://` se formular neposila do FormSubmit. Nabidne stazeni textu nebo otevreni poptavky v e-mailove aplikaci; uzivatel ji musi sam odeslat.

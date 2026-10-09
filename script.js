@@ -270,18 +270,24 @@ if (form) {
           signal: controller.signal
         });
         const data = await response.json();
-        if (!response.ok || (data.success !== true && data.success !== "true")) {
-          throw new Error("Submission not confirmed");
-        }
-        if (/activat|confirm.*email|verify.*email/i.test(String(data.message || ""))) {
-          showStatus("notice", "Odesílání zatím není aktivované. Příjemce musí potvrdit aktivační e-mail od FormSubmit. Poptávka nebyla potvrzena jako odeslaná; můžete ji zatím odeslat ze své e-mailové aplikace.", true);
+        const serviceMessage = String(data.message || data.error || "").slice(0, 300);
+        if (/activat|confirm.*email|verify.*email/i.test(serviceMessage)) {
+          showStatus("notice", "Odesílání pro tento web zatím není aktivované. Ve schránce sekerabka@gmail.com potvrďte aktivační e-mail od FormSubmit pro tuto adresu webu (zkontrolujte i spam), potom odešlete poptávku znovu. Poptávka nebyla potvrzena jako odeslaná.", true);
         } else {
+          if (!response.ok || (data.success !== true && data.success !== "true")) {
+            throw new Error(`FormSubmit (HTTP ${response.status}): ${serviceMessage || "Služba nepotvrdila přijetí poptávky."}`);
+          }
           showStatus("success", "Vaše poptávka byla úspěšně odeslána. Děkujeme! Ozveme se vám kvůli domluvě. Termín je rezervovaný až po osobním potvrzení.");
           form.reset();
           preparedMessage = "";
         }
-      } catch {
-        showStatus("error", "Odeslání se nepodařilo potvrdit. Vaše údaje zůstaly ve formuláři. Zkontrolujte připojení a zkuste to později, nebo poptávku odešlete ze své e-mailové aplikace. Při opakování může přijít duplicitní zpráva.", true);
+      } catch (error) {
+        const reason = error.name === "AbortError"
+          ? "Služba neodpověděla do 20 sekund."
+          : error.message.startsWith("FormSubmit (HTTP ")
+            ? error.message
+            : "Spojení se službou selhalo nebo služba nevrátila platnou odpověď. Zkontrolujte internet a případné blokování požadavků rozšířením prohlížeče.";
+        showStatus("error", `Odeslání se nepodařilo potvrdit. ${reason} Vaše údaje zůstaly ve formuláři. Můžete ji odeslat ze své e-mailové aplikace. Při opakování může přijít duplicitní zpráva.`, true);
       } finally {
         clearTimeout(timeout);
         fields.forEach((field) => { field.disabled = false; });
