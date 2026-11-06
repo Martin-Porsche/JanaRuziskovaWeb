@@ -143,6 +143,7 @@ const form = document.querySelector(".contact-form");
 if (form) {
   form.noValidate = true;
   const submitButton = form.querySelector('[type="submit"]');
+  submitButton.disabled = false;
   const fields = [...form.querySelectorAll('input:not([type="hidden"]):not([name="_honey"]), select, textarea')];
   const dateInput = form.elements.namedItem("date");
   const today = new Date();
@@ -233,24 +234,31 @@ if (form) {
       `Místo: ${values.get("place").trim() || "Po domluvě"}`, "",
       values.get("message").trim(), "", "Děkuji."
     ].join("\n");
-    const recipient = form.dataset.recipient.trim();
     if (location.protocol === "http:" || location.protocol === "https:") {
-      const payload = {
-        _subject: "Nová poptávka líčení – Jana Růžičková",
-        _template: "table",
-        _replyto: values.get("email").trim(),
-        _honey: values.get("_honey") || "",
-        "Jméno": values.get("name").trim(),
-        "E-mail": values.get("email").trim(),
-        "Telefon": values.get("phone").trim() || "Neuveden",
-        "Služba": selectedService,
-        "Požadované datum": selectedDate,
-        "Místo / město": values.get("place").trim() || "Po domluvě",
-        "Zpráva": values.get("message").trim(),
-        "Informace o soukromí": "Vzaty na vědomí",
-        "Rezervace": "Poptávka je nezávazná. Termín musí být potvrzen osobně."
+      const emailService = {
+        serviceId: form.dataset.emailjsService.trim(),
+        templateId: form.dataset.emailjsTemplate.trim(),
+        publicKey: form.dataset.emailjsPublicKey.trim()
       };
-      if (payload._honey) {
+      if (!emailService.serviceId || !emailService.templateId || !emailService.publicKey) {
+        showStatus("notice", "Poptávka je připravená, ale přímé odesílání zatím není nastavené. Odešlete ji prosím tlačítkem Otevřít e-mail ve své e-mailové aplikaci. Termín potvrdíme až po domluvě.", true);
+        return;
+      }
+      const payload = {
+        service_id: emailService.serviceId,
+        template_id: emailService.templateId,
+        user_id: emailService.publicKey,
+        template_params: {
+          client_name: values.get("name").trim(),
+          reply_to: values.get("email").trim(),
+          phone: values.get("phone").trim() || "Neuveden",
+          service: selectedService,
+          date: selectedDate,
+          place: values.get("place").trim() || "Po domluvě",
+          message: values.get("message").trim()
+        }
+      };
+      if (values.get("_honey")) {
         showStatus("error", "Poptávku se nepodařilo odeslat. Můžete ji odeslat ze své e-mailové aplikace.", true);
         return;
       }
@@ -263,28 +271,28 @@ if (form) {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 20000);
       try {
-        const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipient)}`, {
+        const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
           signal: controller.signal
         });
-        const data = await response.json();
-        const serviceMessage = String(data.message || data.error || "").slice(0, 300);
-        if (/activat|confirm.*email|verify.*email/i.test(serviceMessage)) {
-          showStatus("notice", "Odesílání pro tento web zatím není aktivované. Ve schránce sekerabka@gmail.com potvrďte aktivační e-mail od FormSubmit pro tuto adresu webu (zkontrolujte i spam), potom odešlete poptávku znovu. Poptávka nebyla potvrzena jako odeslaná.", true);
-        } else {
-          if (!response.ok || (data.success !== true && data.success !== "true")) {
-            throw new Error(`FormSubmit (HTTP ${response.status}): ${serviceMessage || "Služba nepotvrdila přijetí poptávky."}`);
-          }
-          showStatus("success", "Vaše poptávka byla úspěšně odeslána. Děkujeme! Ozveme se vám kvůli domluvě. Termín je rezervovaný až po osobním potvrzení.");
-          form.reset();
-          preparedMessage = "";
+        const responseText = await response.text();
+        if (response.status !== 200 || responseText.trim() !== "OK") {
+          const reason = response.status === 429
+            ? "Byl dosažen limit odesílání. Zkuste to později nebo použijte e-mailovou aplikaci."
+            : [400, 401, 403, 404, 422].includes(response.status)
+              ? "E-mailová služba poptávku odmítla. Je potřeba ověřit nastavení odesílání."
+              : "E-mailová služba nepotvrdila přijetí poptávky.";
+          throw new Error(`EmailJS (HTTP ${response.status}): ${reason}`);
         }
+        showStatus("success", "Vaše poptávka byla úspěšně odeslána. Děkujeme! Ozveme se vám kvůli domluvě. Termín je rezervovaný až po osobním potvrzení.");
+        form.reset();
+        preparedMessage = "";
       } catch (error) {
         const reason = error.name === "AbortError"
           ? "Služba neodpověděla do 20 sekund."
-          : error.message.startsWith("FormSubmit (HTTP ")
+          : error.message.startsWith("EmailJS (HTTP ")
             ? error.message
             : "Spojení se službou selhalo nebo služba nevrátila platnou odpověď. Zkontrolujte internet a případné blokování požadavků rozšířením prohlížeče.";
         showStatus("error", `Odeslání se nepodařilo potvrdit. ${reason} Vaše údaje zůstaly ve formuláři. Můžete ji odeslat ze své e-mailové aplikace. Při opakování může přijít duplicitní zpráva.`, true);

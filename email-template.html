@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nová poptávka | Jana Růžičková</title>
+</head>
+<body style="margin:0;padding:0;background-color:#fdf0f3;color:#352e32;font-family:Verdana,sans-serif;line-height:1.6;">
+  <div style="display:none;max-height:0;overflow:hidden;">Nová poptávka líčení od {{client_name}}. Služba: {{service}}.</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#fdf0f3;table-layout:fixed;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background-color:#fffcfc;border-top:4px solid #b76e79;table-layout:fixed;overflow-wrap:anywhere;word-break:break-word;">
+          <tr>
+            <td style="padding:28px 24px 24px;border-bottom:1px solid #e7d7dc;">
+              <p style="margin:0 0 8px;color:#75656c;font-size:12px;">MAKE-UP ARTIST</p>
+              <p style="margin:0;color:#57333f;font-family:Georgia,serif;font-size:30px;line-height:1.3;">Jana Růžičková<span style="color:#b76e79;">.</span></p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:28px 24px 16px;">
+              <h1 style="margin:0 0 12px;color:#57333f;font-family:Georgia,serif;font-size:26px;font-weight:normal;line-height:1.3;">Nová poptávka líčení</h1>
+              <p style="margin:0;font-size:15px;">Na webu vás oslovila klientka <strong>{{client_name}}</strong>. Níže najdete její představu a kontaktní údaje.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:0 24px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="table-layout:fixed;">
+                <tr><td style="padding:12px 0;border-bottom:1px solid #e7d7dc;"><p style="margin:0 0 3px;color:#75656c;font-size:12px;">JMÉNO</p><p style="margin:0;font-size:16px;">{{client_name}}</p></td></tr>
+                <tr><td style="padding:12px 0;border-bottom:1px solid #e7d7dc;"><p style="margin:0 0 3px;color:#75656c;font-size:12px;">E-MAIL</p><p style="margin:0;font-size:16px;"><a href="mailto:{{reply_to}}" style="color:#57333f;text-decoration:underline;">{{reply_to}}</a></p></td></tr>
+                <tr><td style="padding:12px 0;border-bottom:1px solid #e7d7dc;"><p style="margin:0 0 3px;color:#75656c;font-size:12px;">TELEFON</p><p style="margin:0;font-size:16px;">{{phone}}</p></td></tr>
+                <tr><td style="padding:12px 0;border-bottom:1px solid #e7d7dc;"><p style="margin:0 0 3px;color:#75656c;font-size:12px;">SLUŽBA</p><p style="margin:0;color:#57333f;font-size:16px;">{{service}}</p></td></tr>
+                <tr><td style="padding:12px 0;border-bottom:1px solid #e7d7dc;"><p style="margin:0 0 3px;color:#75656c;font-size:12px;">POŽADOVANÉ DATUM</p><p style="margin:0;font-size:16px;">{{date}}</p></td></tr>
+                <tr><td style="padding:12px 0;"><p style="margin:0 0 3px;color:#75656c;font-size:12px;">MÍSTO / MĚSTO</p><p style="margin:0;font-size:16px;">{{place}}</p></td></tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 24px 28px;">
+              <h2 style="margin:0 0 12px;color:#57333f;font-family:Georgia,serif;font-size:22px;font-weight:normal;">Představa klientky</h2>
+              <div style="padding:18px;background-color:#fdf0f3;border-left:3px solid #b76e79;font-size:15px;white-space:pre-wrap;overflow-wrap:anywhere;">{{message}}</div>
+              <p style="margin:20px 0 0;color:#75656c;font-size:13px;">Pro domluvu s klientkou použijte tlačítko Odpovědět ve své e-mailové aplikaci. Tato zpráva je nezávaznou poptávkou, nikoli potvrzenou rezervací.</p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 24px;background-color:#57333f;color:#fffcfc;">
+              <p style="margin:0;font-family:Georgia,serif;font-size:18px;font-style:italic;">S citem. S lehkostí. Pro vás.</p>
+              <p style="margin:8px 0 0;font-size:12px;">Poptávka z webu Jany Růžičkové</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
