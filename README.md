@@ -12,24 +12,28 @@ Pro mistni zkouseni spustte z korenove slozky `python3 -m http.server 8765 --bin
 
 - `index.html`: domovska stranka, predstaveni, sluzby, vyber portfolia.
 - `sluzby.html`: ukazkovy cenik a nejcastejsi otazky.
-- `galerie.html`: sest placeholderu, filtry, lightbox, sipky, Escape a swipe.
+- `galerie.html`: sest skutecnych ukazek svatebniho, vecerniho a plesoveho liceni, filtry, lightbox, sipky, Escape a swipe.
 - `kontakt.html`: validace a odeslani poptavky pres EmailJS, e-mailova alternativa, informace o soukromi.
 - `email-template.html`: ceska ruzova HTML sablona pro EmailJS, take samostatny nahled v prohlizeci.
 - `styles.css`: sdilene styly a responzivni layout.
 - `script.js`: menu, animace, galerie a formular.
-- `Images/placeholder.svg`: lokalni placeholder bez externich fotografii.
+- `Images/`: portret Jany a fotografie pro portfolio; puvodni `placeholder.svg` zustava jako rezerva.
 
 ## Doplneni fotografii
 
-Fotografie ulozte do existujici slozky `Images/` (velke I zachovejte i na hostingu). V HTML nahradte `src="Images/placeholder.svg"` konkretnimi cestami a aktualizujte `alt`, rozmery i popisky. U hero fotografie je vhodny siroky zaber s volnym prostorem vlevo pro text. Portrety a portfolio maji pomer 4:5. Pouzijte optimalizovane WebP nebo AVIF s JPEG zalohou podle potreby.
+Fotografie jsou ve slozce `Images/` (velke I zachovejte i na hostingu). `Jana.png` je pouzita v banneru a predstaveni, `svatba1.jpeg` az `svatba4.jpeg` tvori svatebni kategorii, `Večerní.jpeg` vecerni a `Ples.jpeg` plesovou. Cislice rozlisuji vice ukazek stejne kategorie a v galerii zachovavaji poradi.
 
-V galerii muzete na tlacitko `.gallery-item` pridat `data-full="Images/fotografie-ve-vetsim-rozliseni.webp"`. Lightbox jinak pouzije stejnou fotografii jako nahled. Barevne tridy `tone-sage` a `tone-deep` jsou jen pro placeholdery: po pridani skutecnych fotek je odstrante, aby se nemenily barvy make-upu. Odstrante take stitky `FOTOGRAFIE BRZY`, `PORTRÉT JANY` a popisek hero placeholderu.
+Pri pridani dalsi fotografie doplnte prislusne `.gallery-item` v `galerie.html`, nastavte `data-category`, `src`, `alt`, skutecne rozmery a popisky. Samotne pridani souboru do slozky novou polozku nevytvori. Portfolio ma ctvercove nahledy s `object-fit: contain`, aby kolaze pred a po zustaly cele; portret v predstaveni ma pomer 4:5. Pouzijte optimalizovane WebP nebo AVIF s JPEG zalohou podle potreby.
+
+V galerii muzete na tlacitko `.gallery-item` pridat `data-full="Images/fotografie-ve-vetsim-rozliseni.webp"`. Lightbox jinak pouzije stejnou fotografii jako nahled. Na skutecne fotky nepridavejte barevne tridy `tone-sage` a `tone-deep`, aby se nemenily barvy make-upu.
 
 ## Kontakt a odesilani
 
 Kontakty, lokalita ani socialni profily nebyly dodany, proto web neobsahuje vymyslene udaje. V `kontakt.html` nahradte texty kontaktu odkazy `mailto:`, `tel:` a skutecnymi URL Instagramu a Facebooku.
 
 Formular pouziva primo REST API [EmailJS](https://www.emailjs.com/docs/rest-api/send/), bez dalsi knihovny nebo buildu. V `kontakt.html` je vyplnena sluzba `service_dk5npqe`, sablona `template_lke91nn` a verejny klic uctu. Prijemce je v EmailJS nastaveny napevno na `sekerabka@gmail.com`. Pri nedostupnosti sluzby lze poptavku stahnout nebo otevrit v e-mailove aplikaci a samostatne odeslat. Pokud nektery verejny identifikator chybi, data se do API neposilaji a nabidne se tato alternativa.
+
+Overeni 6. 11. 2026: skutecny test z mistniho webu vratil `200 OK`, historie EmailJS zaznamenala `OK` a prijemce potvrdil doruceni i spravny ruzovy cesky vzhled. Po publikovani zmen na GitHub Pages znovu overte odeslani z nasazene adresy.
 
 Pri odesilani zustane navstevnice na kontaktni strance. Ruzove potvrzeni se objevi pouze po odpovedi `200 OK` s telem `OK`, podle kontraktu API. Potvrzeni znamena prijeti sluzbou, nikoli zarucene doruceni do schranky nebo rezervaci terminu. Pri chybe, preruseni spojeni nebo cekani delsim nez 20 sekund se zachovaji vyplnene udaje a nabidne se e-mailova alternativa. Opakovani po nepotvrzenem odeslani muze vytvorit duplicitni poptavku. Behem odesilani jsou pole a tlacitko zablokovane proti opakovanemu kliknuti.
 
@@ -58,7 +62,7 @@ Web neuklada obsah poptavky do localStorage ani cookies. Pri primem odeslani se 
 ## Pred zverejnenim
 
 - Potvrdte cenik, popisy sluzeb a vsechny obchodni podminky s Janou. Uvedene ceny jsou oznacene jako ukazkove.
-- Doplnte fotografie se souhlasem fotografovanych osob, skutecne kontakty a lokalitu.
+- Overte souhlasy ke zverejneni fotografii a doplnte skutecne kontakty a lokalitu.
 - Dokoncete nastaveni EmailJS, ochranu proti spamu a skutecny test dorucovani z hostingu. Dokoncete pravni informace.
 - Zkontrolujte web na mobilu, ovladani klavesnici a obsah s realnymi fotografiemi.
 
